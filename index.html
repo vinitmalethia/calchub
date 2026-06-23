@@ -629,6 +629,21 @@
     line-height: 1.55;
   }
 
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 800;
+  }
+
+  .footer-links a:hover { color: var(--text); }
+
   @media (min-width: 680px) {
     .app-shell { padding-inline: 24px; }
     .topbar { margin-inline: -24px; padding-inline: 24px; }
@@ -712,6 +727,12 @@
 
     <footer>
       CalcHub is a simple calculator website. Results are calculated locally in your browser, so your numbers stay on your device.
+      <div class="footer-links">
+        <a href="privacy-policy/">Privacy Policy</a>
+        <a href="about-us/">About Us</a>
+        <a href="contact-us/">Contact Us</a>
+        <a href="disclaimer/">Disclaimer</a>
+      </div>
     </footer>
   </div>
 
