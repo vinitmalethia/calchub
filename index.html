@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CalcHub - mobile-friendly calculators with fun meme reactions for every result.">
+<title>CalcHub - Meme Calculator Website</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #071116;
+    --surface: #0f1e25;
+    --surface-2: #142933;
+    --card: #10252e;
+    --line: #24404b;
+    --text: #eef7f8;
+    --muted: #9ab1b8;
+    --cyan: #37d3ff;
+    --mint: #41e6a1;
+    --pink: #ff6fae;
+    --yellow: #ffd166;
+    --orange: #ff9f43;
+    --danger: #ff6b6b;
+    --shadow: 0 18px 48px rgba(0, 0, 0, .28);
+    --radius: 8px;
+    --sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: auto; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      linear-gradient(145deg, rgba(55, 211, 255, .12), transparent 34rem),
+      linear-gradient(315deg, rgba(255, 111, 174, .10), transparent 32rem),
+      var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+  }
+
+  button, input, select, textarea { font: inherit; }
+  button { -webkit-tap-highlight-color: transparent; }
+
+  .app-shell {
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    padding: 0 16px 42px;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 62px;
+    padding: 10px 16px;
+    margin: 0 -16px;
+    background: rgba(7, 17, 22, .86);
+    border-bottom: 1px solid rgba(36, 64, 75, .8);
+    backdrop-filter: blur(16px);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--cyan), var(--mint));
+    color: #06222a;
+    box-shadow: 0 10px 24px rgba(55, 211, 255, .18);
+  }
+
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .icon-btn,
+  .back-btn,
+  .primary-btn,
+  .ghost-btn {
+    min-height: 42px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--text);
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .icon-btn {
+    width: 42px;
+    display: grid;
+    place-items: center;
+    font-size: 1.05rem;
+  }
+
+  .back-btn,
+  .primary-btn,
+  .ghost-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 14px;
+    font-weight: 700;
+  }
+
+  .primary-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--cyan), var(--mint));
+    border-color: transparent;
+    color: #06222a;
+  }
+
+  .ghost-btn { color: var(--muted); }
+
+  .home-hero {
+    padding: 30px 0 18px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 32px;
+    padding: 0 10px;
+    border: 1px solid rgba(55, 211, 255, .25);
+    border-radius: var(--radius);
+    color: var(--cyan);
+    background: rgba(55, 211, 255, .08);
+    font: 700 .76rem var(--mono);
+    text-transform: uppercase;
+  }
+
+  h1, h2, h3, p { margin-top: 0; }
+  h1 {
+    max-width: 760px;
+    margin: 16px 0 12px;
+    font-size: clamp(2.1rem, 11vw, 4.8rem);
+    line-height: .98;
+    letter-spacing: 0;
+  }
+
+  .lead {
+    max-width: 650px;
+    margin-bottom: 22px;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: rgba(15, 30, 37, .86);
+  }
+
+  .search-wrap input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text);
+  }
+
+  .quick-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 18px 0 22px;
+  }
+
+  .stat {
+    min-height: 76px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: rgba(16, 37, 46, .72);
+  }
+
+  .stat strong {
+    display: block;
+    font: 800 1.35rem var(--mono);
+  }
+
+  .stat span {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: .82rem;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 28px 0 12px;
+  }
+
+  .section-title h2 {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .pill {
+    flex: 0 0 auto;
+    padding: 5px 9px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--muted);
+    font: 700 .72rem var(--mono);
+  }
+
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .calc-card {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) 28px;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    min-height: 94px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: rgba(16, 37, 46, .92);
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .04) inset;
+  }
+
+  .calc-card:active { transform: translateY(1px); }
+
+  .card-icon {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius);
+    color: #061820;
+    font-size: 1.35rem;
+  }
+
+  .card-icon.health { background: var(--mint); }
+  .card-icon.finance { background: var(--yellow); }
+  .card-icon.math { background: var(--cyan); }
+  .card-icon.daily { background: var(--pink); }
+
+  .calc-card h3 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+  }
+
+  .calc-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: .84rem;
+    line-height: 1.45;
+  }
+
+  .arrow {
+    color: var(--muted);
+    font-size: 1.35rem;
+    text-align: right;
+  }
+
+  .calculator-page {
+    display: none;
+    padding-top: 18px;
+  }
+
+  .calculator-page.active,
+  .home-page.active { display: block; }
+
+  .home-page { display: none; }
+
+  .calc-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin: 10px 0 16px;
+  }
+
+  .calc-head .card-icon {
+    flex: 0 0 58px;
+    width: 58px;
+    height: 58px;
+  }
+
+  .calc-head h1 {
+    margin: 0 0 5px;
+    font-size: clamp(1.55rem, 8vw, 2.5rem);
+    line-height: 1.1;
+  }
+
+  .calc-head p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .tool-card,
+  .result-card,
+  .meme-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: rgba(16, 37, 46, .92);
+    box-shadow: var(--shadow);
+  }
+
+  .tool-card { padding: 16px; }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .field label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--muted);
+    font: 700 .72rem var(--mono);
+    text-transform: uppercase;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    outline: 0;
+    padding: 0 12px;
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .field textarea {
+    min-height: 150px;
+    padding-top: 12px;
+    resize: vertical;
+  }
+
+  .action-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .action-row .ghost-btn {
+    flex: 0 0 auto;
+    min-width: 48px;
+    padding: 0 12px;
+  }
+
+  .action-row .primary-btn {
+    flex: 1 1 auto;
+  }
+
+  .result-card {
+    display: none;
+    margin-top: 14px;
+    padding: 16px;
+  }
+
+  .result-card.show { display: block; }
+
+  .result-main {
+    font: 800 1.85rem var(--mono);
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+
+  .result-sub {
+    margin-top: 4px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .result-item {
+    padding: 11px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .result-label {
+    color: var(--muted);
+    font: 700 .68rem var(--mono);
+    text-transform: uppercase;
+  }
+
+  .result-value {
+    margin-top: 4px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+  }
+
+  .meme-card {
+    display: none;
+    margin-top: 14px;
+    overflow: hidden;
+    background: #071116;
+  }
+
+  .meme-card.show { display: block; }
+
+  .meme-top,
+  .meme-bottom {
+    min-height: 44px;
+    display: grid;
+    place-items: center;
+    padding: 8px 10px;
+    color: #fff;
+    font: 800 .94rem var(--sans);
+    text-align: center;
+    text-transform: uppercase;
+    background: #05090b;
+  }
+
+  .meme-face {
+    min-height: 160px;
+    display: grid;
+    place-items: center;
+    background:
+      linear-gradient(135deg, rgba(55, 211, 255, .24), transparent),
+      linear-gradient(315deg, rgba(255, 209, 102, .22), transparent),
+      var(--surface-2);
+    font-size: 4.8rem;
+  }
+
+  .meme-image {
+    display: none;
+    width: 100%;
+    aspect-ratio: 350 / 374;
+    object-fit: cover;
+    background: var(--surface-2);
+  }
+
+  .meme-card.has-image .meme-face { display: none; }
+  .meme-card.has-image .meme-image { display: block; }
+  .meme-card.has-image .meme-top,
+  .meme-card.has-image .meme-bottom { display: none; }
+
+  .love-meter {
+    height: 12px;
+    margin-top: 12px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--surface);
+  }
+
+  .love-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--pink), var(--yellow));
+    transition: width .7s ease;
+  }
+
+  .mini-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .mini-tab {
+    min-height: 42px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--muted);
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .mini-tab.active {
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--cyan), var(--mint));
+    color: #06222a;
+  }
+
+  .cgpa-panel { display: none; }
+  .cgpa-panel.active { display: block; }
+
+  .dynamic-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 42px;
+    gap: 8px;
+    align-items: end;
+    margin-bottom: 10px;
+  }
+
+  .remove-btn {
+    width: 42px;
+    min-height: 48px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--pink);
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .scale-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .scale-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .scale-item strong {
+    color: var(--cyan);
+    font-family: var(--mono);
+  }
+
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .display {
+    min-height: 78px;
+    margin-bottom: 12px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    text-align: right;
+  }
+
+  .display .prev {
+    min-height: 18px;
+    color: var(--muted);
+    font: 700 .8rem var(--mono);
+  }
+
+  .display .expr {
+    margin-top: 6px;
+    font: 800 1.7rem var(--mono);
+    overflow-wrap: anywhere;
+  }
+
+  .key {
+    min-height: 50px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+    font: 800 1rem var(--mono);
+    cursor: pointer;
+  }
+
+  .key.op { color: var(--cyan); }
+  .key.soft { color: var(--pink); }
+  .key.equal {
+    background: linear-gradient(135deg, var(--cyan), var(--mint));
+    color: #06222a;
+    border-color: transparent;
+  }
+
+  .empty-state {
+    display: none;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--muted);
+    background: rgba(16, 37, 46, .7);
+  }
+
+  footer {
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: .84rem;
+    line-height: 1.55;
+  }
+
+  @media (min-width: 680px) {
+    .app-shell { padding-inline: 24px; }
+    .topbar { margin-inline: -24px; padding-inline: 24px; }
+    .quick-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .calc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .form-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tool-card { padding: 20px; }
+    .scale-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 960px) {
+    .home-hero { padding-top: 48px; }
+    .calc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .calculator-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 16px;
+      align-items: start;
+    }
+    .meme-card { margin-top: 0; }
+  }
+</style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="CalcHub home">
+        <span class="brand-mark">=</span>
+        <span>CalcHub</span>
+      </a>
+      <div class="top-actions">
+        <button class="back-btn" id="backBtn" type="button" onclick="goHome()" hidden>← Home</button>
+        <button class="icon-btn" type="button" onclick="focusSearch()" title="Search calculators">⌕</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="home-page active" id="homePage">
+        <div class="home-hero">
+          <span class="eyebrow">Free • Fast • Meme Results</span>
+          <h1>Calculators that answer fast and make results less boring.</h1>
+          <p class="lead">Pick a calculator, use it on its own page, and get a tiny meme reaction with the answer. Built mobile-first for quick use on phones.</p>
+          <label class="search-wrap" for="searchInput">
+            <span>⌕</span>
+            <input id="searchInput" type="search" placeholder="Search BMI, EMI, age, percentage..." oninput="filterCards(this.value)">
+          </label>
+        </div>
+
+        <div class="quick-stats">
+          <div class="stat"><strong id="totalTools">12</strong><span>calculators</span></div>
+          <div class="stat"><strong>0</strong><span>signups needed</span></div>
+          <div class="stat"><strong>100%</strong><span>runs in browser</span></div>
+          <div class="stat"><strong>🙂</strong><span>meme after results</span></div>
+        </div>
+
+        <div id="homeSections"></div>
+        <div class="empty-state" id="emptyState">No calculator found. Try searching for BMI, loan, age, tip, discount or words.</div>
+      </section>
+
+      <section class="calculator-page" id="calculatorPage" aria-live="polite">
+        <div class="calc-head" id="calcHead"></div>
+        <div class="calculator-layout">
+          <div>
+            <div class="tool-card" id="toolCard"></div>
+            <div class="result-card" id="resultCard">
+              <div class="result-main" id="resultMain"></div>
+              <div class="result-sub" id="resultSub"></div>
+              <div class="result-grid" id="resultGrid"></div>
+            </div>
+          </div>
+          <aside class="meme-card" id="memeCard" aria-label="Meme reaction">
+            <div class="meme-top" id="memeTop">Result unlocked</div>
+            <img class="meme-image" id="memeImage" alt="" loading="eager">
+            <div class="meme-face" id="memeFace">😎</div>
+            <div class="meme-bottom" id="memeBottom">Math did the thing</div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      CalcHub is a simple calculator website. Results are calculated locally in your browser, so your numbers stay on your device.
+    </footer>
+  </div>
+
+<script>
+const categories = {
+  health: { title: 'Health Calculators', emoji: '💪' },
+  finance: { title: 'Money Calculators', emoji: '💰' },
+  math: { title: 'Math & Conversion', emoji: '🔢' },
+  daily: { title: 'Daily & Fun Tools', emoji: '✨' }
+};
+
+const calculators = [
+  {
+    id: 'bmi', category: 'health', icon: '⚖️', title: 'BMI Calculator',
+    desc: 'Check body mass index using weight and height.',
+    tags: 'bmi body mass index weight height health',
+    fields: [
+      { id: 'weight', label: 'Weight (kg)', type: 'number', placeholder: '70', min: 1 },
+      { id: 'height', label: 'Height (cm)', type: 'number', placeholder: '170', min: 1 }
+    ],
+    action: 'Calculate BMI',
+    calculate: values => {
+      const w = number(values.weight), h = number(values.height) / 100;
+      requireValues(w, h);
+      const bmi = w / (h * h);
+      const status = bmi < 18.5 ? 'Underweight' : bmi < 25 ? 'Normal weight' : bmi < 30 ? 'Overweight' : 'Obese';
+      return result(`${bmi.toFixed(1)} kg/m²`, status, [
+        ['Status', status],
+        ['Ideal range', '18.5 - 24.9']
+      ], status === 'Normal weight' ? 'healthy' : 'steady');
+    }
+  },
+  {
+    id: 'age', category: 'health', icon: '🎂', title: 'Age Calculator',
+    desc: 'Exact age in years, months and days.',
+    tags: 'age birthday dob years months days',
+    fields: [
+      { id: 'dob', label: 'Date of birth', type: 'date' },
+      { id: 'ref', label: 'Calculate age on', type: 'date', defaultToday: true }
+    ],
+    action: 'Calculate Age',
+    calculate: values => {
+      const dob = new Date(values.dob);
+      const ref = values.ref ? new Date(values.ref) : new Date();
+      if (isNaN(dob) || dob > ref) throw new Error('Enter a valid birth date.');
+      let y = ref.getFullYear() - dob.getFullYear();
+      let m = ref.getMonth() - dob.getMonth();
+      let d = ref.getDate() - dob.getDate();
+      if (d < 0) { m--; d += new Date(ref.getFullYear(), ref.getMonth(), 0).getDate(); }
+      if (m < 0) { y--; m += 12; }
+      const totalDays = Math.floor((ref - dob) / 86400000);
+      const next = new Date(ref.getFullYear(), dob.getMonth(), dob.getDate());
+      if (next <= ref) next.setFullYear(ref.getFullYear() + 1);
+      const daysToNext = Math.ceil((next - ref) / 86400000);
+      return result(`${y} years, ${m} months, ${d} days`, 'Age is just your level number.', [
+        ['Total months', y * 12 + m],
+        ['Total days', totalDays.toLocaleString()],
+        ['Next birthday', `in ${daysToNext} days`],
+        ['Born on', dob.toLocaleDateString('en-US', { weekday: 'long' })]
+      ], y >= 18 ? 'grown' : 'young');
+    }
+  },
+  {
+    id: 'calorie', category: 'health', icon: '🔥', title: 'Calorie Calculator',
+    desc: 'Estimate daily maintenance calories.',
+    tags: 'calorie bmr tdee weight loss gain',
+    fields: [
+      { id: 'age', label: 'Age', type: 'number', placeholder: '25', min: 1 },
+      { id: 'gender', label: 'Gender', type: 'select', options: [['m', 'Male'], ['f', 'Female']] },
+      { id: 'weight', label: 'Weight (kg)', type: 'number', placeholder: '70', min: 1 },
+      { id: 'height', label: 'Height (cm)', type: 'number', placeholder: '170', min: 1 },
+      { id: 'activity', label: 'Activity level', type: 'select', options: [['1.2', 'Sedentary'], ['1.375', 'Light'], ['1.55', 'Moderate'], ['1.725', 'Active'], ['1.9', 'Very active']], value: '1.55' }
+    ],
+    action: 'Calculate Calories',
+    calculate: values => {
+      const age = number(values.age), w = number(values.weight), h = number(values.height), act = number(values.activity);
+      requireValues(age, w, h, act);
+      const bmr = values.gender === 'm' ? 88.36 + 13.4 * w + 4.8 * h - 5.7 * age : 447.6 + 9.2 * w + 3.1 * h - 4.3 * age;
+      const tdee = Math.round(bmr * act);
+      return result(`${tdee.toLocaleString()} kcal/day`, 'Estimated maintenance calories.', [
+        ['Weight loss target', `${(tdee - 500).toLocaleString()} kcal/day`],
+        ['Weight gain target', `${(tdee + 500).toLocaleString()} kcal/day`]
+      ], 'food');
+    }
+  },
+  {
+    id: 'emi', category: 'finance', icon: '🏦', title: 'EMI Calculator',
+    desc: 'Monthly EMI for loans with interest.',
+    tags: 'emi loan interest home car personal finance',
+    fields: [
+      { id: 'principal', label: 'Loan amount (₹)', type: 'number', placeholder: '500000', min: 1 },
+      { id: 'rate', label: 'Interest rate (%/year)', type: 'number', placeholder: '8.5', min: 0, step: .1 },
+      { id: 'months', label: 'Tenure (months)', type: 'number', placeholder: '60', min: 1 }
+    ],
+    action: 'Calculate EMI',
+    calculate: values => {
+      const p = number(values.principal), r = number(values.rate) / 12 / 100, n = number(values.months);
+      requireValues(p, n);
+      const emi = r === 0 ? p / n : p * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+      const total = emi * n;
+      return result(`${money(emi)}/mo`, 'Your estimated monthly payment.', [
+        ['Total payment', money(total)],
+        ['Total interest', money(total - p)]
+      ], emi > 50000 ? 'money-big' : 'money');
+    }
+  },
+  {
+    id: 'salary', category: 'finance', icon: '💼', title: 'Salary Calculator',
+    desc: 'CTC to monthly in-hand estimate.',
+    tags: 'salary ctc income tax take home pf',
+    fields: [
+      { id: 'ctc', label: 'Annual CTC (₹)', type: 'number', placeholder: '1200000', min: 1 },
+      { id: 'pf', label: 'PF (% of basic)', type: 'number', value: '12', min: 0, max: 100 },
+      { id: 'regime', label: 'Tax regime', type: 'select', options: [['new', 'New regime'], ['old', 'Old regime']] }
+    ],
+    action: 'Estimate Salary',
+    calculate: values => {
+      const ctc = number(values.ctc), pfPct = number(values.pf) / 100;
+      requireValues(ctc);
+      const basic = ctc * .4;
+      const pf = basic * pfPct * 12;
+      const deduction = values.regime === 'new' ? 75000 : 150000;
+      const taxable = Math.max(0, ctc - pf - deduction);
+      const tax = incomeTax(taxable, values.regime);
+      const annual = ctc - pf - tax;
+      return result(money(annual / 12), 'Estimated monthly in-hand.', [
+        ['Annual in-hand', money(annual)],
+        ['Estimated tax', money(tax)],
+        ['PF deduction', money(pf)],
+        ['Basic salary', money(basic)]
+      ], annual / 12 > 100000 ? 'salary-big' : 'salary');
+    }
+  },
+  {
+    id: 'sip', category: 'finance', icon: '📈', title: 'SIP Calculator',
+    desc: 'Estimate mutual fund SIP maturity value.',
+    tags: 'sip mutual fund investment return wealth',
+    fields: [
+      { id: 'monthly', label: 'Monthly SIP (₹)', type: 'number', placeholder: '5000', min: 1 },
+      { id: 'rate', label: 'Expected return (%/year)', type: 'number', placeholder: '12', min: 0, step: .5 },
+      { id: 'years', label: 'Time period (years)', type: 'number', placeholder: '10', min: 1 }
+    ],
+    action: 'Calculate Returns',
+    calculate: values => {
+      const m = number(values.monthly), r = number(values.rate) / 12 / 100, n = number(values.years) * 12;
+      requireValues(m, n);
+      const corpus = r === 0 ? m * n : m * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+      const invested = m * n;
+      return result(money(corpus), 'Estimated corpus at maturity.', [
+        ['Invested amount', money(invested)],
+        ['Estimated gains', money(corpus - invested)]
+      ], corpus - invested > invested ? 'profit' : 'money');
+    }
+  },
+  {
+    id: 'percentage', category: 'math', icon: '%', title: 'Percentage Calculator',
+    desc: 'Percent of, percent share and percent change.',
+    tags: 'percentage percent increase decrease math',
+    fields: [
+      { id: 'mode', label: 'Mode', type: 'select', options: [['of', 'X% of Y'], ['is', 'X is what % of Y'], ['change', '% change from X to Y']] },
+      { id: 'x', label: 'X', type: 'number', placeholder: '15' },
+      { id: 'y', label: 'Y', type: 'number', placeholder: '200' }
+    ],
+    action: 'Calculate Percentage',
+    calculate: values => {
+      const x = number(values.x), y = number(values.y);
+      requireValues(x, y);
+      if (values.mode === 'of') return result((x / 100 * y).toFixed(2), `${x}% of ${y}`, [], 'math');
+      if (values.mode === 'is') return result(`${(x / y * 100).toFixed(2)}%`, `${x} is this percent of ${y}`, [], 'math');
+      return result(`${((y - x) / x * 100).toFixed(2)}%`, `Change from ${x} to ${y}`, [], y >= x ? 'profit' : 'oops');
+    }
+  },
+  {
+    id: 'unit', category: 'math', icon: '↔', title: 'Unit Converter',
+    desc: 'Convert length, weight, temperature and speed.',
+    tags: 'unit converter length weight temperature speed',
+    custom: 'unit'
+  },
+  {
+    id: 'basic', category: 'math', icon: '🧮', title: 'Basic Calculator',
+    desc: 'Fast phone-friendly arithmetic keypad.',
+    tags: 'calculator basic arithmetic plus minus multiply divide',
+    custom: 'basic'
+  },
+  {
+    id: 'discount', category: 'daily', icon: '🏷️', title: 'Discount Calculator',
+    desc: 'Final price and savings on shopping.',
+    tags: 'discount sale price shopping savings',
+    fields: [
+      { id: 'price', label: 'Original price (₹)', type: 'number', placeholder: '1999', min: 0 },
+      { id: 'discount', label: 'Discount (%)', type: 'number', placeholder: '20', min: 0, max: 100 }
+    ],
+    action: 'Calculate Discount',
+    calculate: values => {
+      const p = number(values.price), d = number(values.discount);
+      requireValues(p);
+      const save = p * d / 100;
+      return result(money(p - save), 'Final price after discount.', [
+        ['You save', money(save)],
+        ['Discount', `${d}%`]
+      ], d >= 50 ? 'deal' : 'shopping');
+    }
+  },
+  {
+    id: 'tip', category: 'daily', icon: '🍽️', title: 'Tip Calculator',
+    desc: 'Split restaurant bill with tip.',
+    tags: 'tip bill split restaurant food',
+    fields: [
+      { id: 'bill', label: 'Bill amount (₹)', type: 'number', placeholder: '1200', min: 0 },
+      { id: 'tip', label: 'Tip (%)', type: 'number', placeholder: '15', min: 0 },
+      { id: 'split', label: 'Split between', type: 'number', placeholder: '2', min: 1 }
+    ],
+    action: 'Calculate Tip',
+    calculate: values => {
+      const bill = number(values.bill), tipPct = number(values.tip), split = number(values.split) || 1;
+      requireValues(bill);
+      const tip = bill * tipPct / 100, total = bill + tip;
+      return result(money(total / split), 'Each person pays this much.', [
+        ['Tip amount', money(tip)],
+        ['Total bill', money(total)]
+      ], split > 4 ? 'group' : 'food');
+    }
+  },
+  {
+    id: 'love', category: 'daily', icon: '❤️', title: 'Love Calculator',
+    desc: 'Fun name compatibility score.',
+    tags: 'love compatibility name couple fun',
+    fields: [
+      { id: 'a', label: 'Your name', type: 'text', placeholder: 'Your name' },
+      { id: 'b', label: "Partner's name", type: 'text', placeholder: 'Their name' }
+    ],
+    action: 'Check Compatibility',
+    calculate: values => {
+      const a = values.a.trim(), b = values.b.trim();
+      if (!a || !b) throw new Error('Enter both names.');
+      let hash = 0;
+      for (const ch of (a + b).toLowerCase()) hash = (hash * 31 + ch.charCodeAt(0)) % 100;
+      const score = Math.max(32, hash);
+      const msg = score >= 90 ? 'Soulmate energy detected.' : score >= 70 ? 'Strong chemistry.' : score >= 50 ? 'Cute potential.' : 'Opposites can still be interesting.';
+      return result(`${score}% match`, msg, [['Compatibility', `${score}/100`]], score >= 80 ? 'love-high' : 'love', score);
+    }
+  },
+  {
+    id: 'cgpa', category: 'daily', icon: '🎓', title: 'CGPA Calculator',
+    desc: 'Instant GPA from grades and CGPA from semesters.',
+    tags: 'cgpa gpa vit credits grades semester course s a b c d e f',
+    custom: 'cgpa'
+  },
+  {
+    id: 'words', category: 'daily', icon: '📝', title: 'Word Counter',
+    desc: 'Words, characters, sentences and reading time.',
+    tags: 'word count character text reading time',
+    fields: [
+      { id: 'text', label: 'Paste your text', type: 'textarea', placeholder: 'Type or paste text here...' }
+    ],
+    action: 'Count Words',
+    calculate: values => {
+      const txt = values.text || '';
+      const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+      const chars = txt.length;
+      const sentences = txt.split(/[.!?]+/).filter(s => s.trim()).length;
+      const readTime = words < 200 ? '<1 min' : `${Math.ceil(words / 200)} min`;
+      return result(`${words.toLocaleString()} words`, 'Text stats are ready.', [
+        ['Characters', chars.toLocaleString()],
+        ['Sentences', sentences],
+        ['Reading time', readTime]
+      ], words > 500 ? 'writer' : 'words');
+    }
+  }
+];
+
+const memeBank = {
+  healthy: ['BMI CHECK', 'Main character health stats', '😌'],
+  steady: ['Result arrived', 'Small steps, big wins', '🙂'],
+  grown: ['Age calculated', 'Adulting level increased', '🧾'],
+  young: ['Age calculated', 'Tiny legend loading', '🎮'],
+  food: ['Calories counted', 'Snack negotiations begin', '🍕'],
+  money: ['Money math done', 'Wallet has entered the chat', '💸'],
+  'money-big': ['EMI spotted', 'Budget spreadsheet sweating', '😅'],
+  salary: ['Salary estimated', 'Payday dreams processing', '🤑'],
+  'salary-big': ['Salary estimated', 'Treat yourself responsibly', '😎'],
+  profit: ['Numbers going up', 'Investment brain activated', '📈'],
+  math: ['Math solved', 'Calculator carried the team', '🧠'],
+  oops: ['Percent change said', 'That went the other way', '🙃'],
+  deal: ['Discount found', 'Shopping cart victory dance', '🛍️'],
+  shopping: ['Price updated', 'Bargain mode online', '🏷️'],
+  group: ['Bill split', 'Friend group peace restored', '🤝'],
+  love: ['Love score is in', 'Feelings department reporting', '💘'],
+  'love-high': ['Love score is in', 'Rom-com background music starts', '😍'],
+  'cgpa-low': ['CGPA calculated', "It's not what I expected", '😢', 'assets/memes/meme_1.png'],
+  'cgpa-still-low': ['CGPA calculated', 'Worked hard, still not that good', '🌧️', 'assets/memes/meme_3.png'],
+  'cgpa-energy-low': ['CGPA calculated', 'Energy level 1%', '🔋', 'assets/memes/meme_8.png'],
+  'cgpa-prepare': ['CGPA calculated', 'Deep breath, pray, refresh 10 times', '✅', 'assets/memes/meme_11.png'],
+  'cgpa-math': ['CGPA calculated', "Math is math, emotions don't matter", '🧮', 'assets/memes/meme_2.png'],
+  'cgpa-secret': ['CGPA calculated', "It's a secret", '😉', 'assets/memes/meme_7.png'],
+  'cgpa-knowledge': ['CGPA calculated', 'Knowledge is forever', '📚', 'assets/memes/meme_10.png'],
+  'cgpa-small-win': ['CGPA calculated', 'Even +0.01 counts', '😎', 'assets/memes/meme_4.png'],
+  'cgpa-reality': ['CGPA calculated', 'Expectation meets reality', '💻', 'assets/memes/meme_9.png'],
+  'cgpa-end-sem': ['CGPA calculated', 'End semester calculation mode', '📊', 'assets/memes/meme_12.png'],
+  writer: ['Word count done', 'Essay boss battle survived', '✍️'],
+  words: ['Text counted', 'Words behaved nicely today', '📝'],
+  error: ['Hold up', 'Calculator needs valid input', '🤨'],
+  default: ['Result unlocked', 'Math did the thing', '😎']
+};
+
+const gradePoints = { S: 10, A: 9, B: 8, C: 7, D: 6, E: 5, F: 0 };
+
+let currentCalc = null;
+let calcExpr = '0';
+let calcPrev = '';
+let justEval = false;
+
+function init() {
+  document.getElementById('totalTools').textContent = calculators.length;
+  renderHome();
+  window.addEventListener('hashchange', route);
+  route();
+}
+
+function renderHome() {
+  const wrap = document.getElementById('homeSections');
+  wrap.innerHTML = Object.entries(categories).map(([key, cat]) => {
+    const cards = calculators.filter(c => c.category === key).map(cardMarkup).join('');
+    return `<section data-category="${key}">
+      <div class="section-title"><h2>${cat.emoji} ${cat.title}</h2><span class="pill">${calculators.filter(c => c.category === key).length} tools</span></div>
+      <div class="calc-grid">${cards}</div>
+    </section>`;
+  }).join('');
+}
+
+function cardMarkup(calc) {
+  return `<button class="calc-card" type="button" data-tags="${escapeAttr(calc.tags)}" onclick="openCalc('${calc.id}')">
+    <span class="card-icon ${calc.category}">${calc.icon}</span>
+    <span><h3>${calc.title}</h3><p>${calc.desc}</p></span>
+    <span class="arrow">›</span>
+  </button>`;
+}
+
+function route() {
+  const hash = location.hash.replace(/^#/, '');
+  if (hash.startsWith('calc/')) {
+    showCalc(hash.split('/')[1]);
+  } else {
+    showHome();
+  }
+}
+
+function showHome() {
+  document.getElementById('homePage').classList.add('active');
+  document.getElementById('calculatorPage').classList.remove('active');
+  document.getElementById('backBtn').hidden = true;
+  clearCalculatorView();
+  currentCalc = null;
+  window.scrollTo(0, 0);
+}
+
+function openCalc(id) {
+  location.hash = `calc/${id}`;
+}
+
+function goHome() {
+  history.replaceState(null, '', `${location.pathname}${location.search}#home`);
+  showHome();
+}
+
+function showCalc(id) {
+  const calc = calculators.find(c => c.id === id) || calculators[0];
+  currentCalc = calc;
+  document.getElementById('homePage').classList.remove('active');
+  document.getElementById('calculatorPage').classList.add('active');
+  document.getElementById('backBtn').hidden = false;
+  document.getElementById('calcHead').innerHTML = `<span class="card-icon ${calc.category}">${calc.icon}</span><div><h1>${calc.title}</h1><p>${calc.desc}</p></div>`;
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('memeCard').classList.remove('show');
+  renderTool(calc);
+  window.scrollTo(0, 0);
+}
+
+function clearCalculatorView() {
+  document.getElementById('calcHead').innerHTML = '';
+  document.getElementById('toolCard').innerHTML = '';
+  document.getElementById('resultGrid').innerHTML = '';
+  document.getElementById('resultMain').textContent = '';
+  document.getElementById('resultSub').textContent = '';
+  const memeCard = document.getElementById('memeCard');
+  const memeImage = document.getElementById('memeImage');
+  memeCard.classList.remove('show', 'has-image');
+  memeImage.removeAttribute('src');
+  memeImage.alt = '';
+}
+
+function renderTool(calc) {
+  const card = document.getElementById('toolCard');
+  if (calc.custom === 'basic') {
+    card.innerHTML = `<div class="display"><div class="prev" id="calcPrev"></div><div class="expr" id="calcExpr">0</div></div>
+      <div class="keypad">
+        ${['AC','±','%','/','7','8','9','*','4','5','6','-','1','2','3','+','0','.','='].map(k => {
+          const klass = k === '=' ? 'key equal' : ['AC','±','%'].includes(k) ? 'key soft' : ['/', '*', '-', '+'].includes(k) ? 'key op' : 'key';
+          const label = {'/':'÷','*':'×','-':'−'}[k] || k;
+          const span = k === '0' ? ' style="grid-column: span 2"' : '';
+          return `<button class="${klass}" type="button"${span} onclick="pressKey('${k}')">${label}</button>`;
+        }).join('')}
+      </div>`;
+    calcExpr = '0'; calcPrev = ''; justEval = false;
+    return;
+  }
+  if (calc.custom === 'unit') {
+    card.innerHTML = `<div class="form-grid two">
+      ${fieldMarkup({ id: 'category', label: 'Category', type: 'select', options: [['len','Length'], ['wt','Weight'], ['tmp','Temperature'], ['spd','Speed']] })}
+      ${fieldMarkup({ id: 'value', label: 'Value', type: 'number', placeholder: '100', step: 'any' })}
+      ${fieldMarkup({ id: 'from', label: 'From', type: 'select', options: [] })}
+      ${fieldMarkup({ id: 'to', label: 'To', type: 'select', options: [] })}
+    </div><div class="action-row"><button class="primary-btn" type="button" onclick="calculateCurrent()">Convert</button><button class="ghost-btn" type="button" onclick="resetCurrent()">↺</button></div>`;
+    document.getElementById('field-category').addEventListener('change', updateUnits);
+    updateUnits();
+    return;
+  }
+  if (calc.custom === 'cgpa') {
+    card.innerHTML = `<div class="mini-tabs" role="tablist" aria-label="CGPA calculator modes">
+        <button class="mini-tab active" type="button" onclick="switchCgpaMode('gpa')">Instant GPA</button>
+        <button class="mini-tab" type="button" onclick="switchCgpaMode('cgpa')">Semester CGPA</button>
+      </div>
+      <div class="cgpa-panel active" id="gpaPanel">
+        <div id="courseRows"></div>
+        <div class="action-row">
+          <button class="ghost-btn" type="button" onclick="addCourseRow()">+ Add Course</button>
+          <button class="primary-btn" type="button" onclick="calculateGpa()">Calculate GPA</button>
+        </div>
+        <div class="scale-grid">
+          ${Object.entries(gradePoints).map(([grade, points]) => `<div class="scale-item"><strong>${grade}</strong><span>${points} pts</span></div>`).join('')}
+        </div>
+      </div>
+      <div class="cgpa-panel" id="cgpaPanel">
+        <div id="semesterRows"></div>
+        <div class="action-row">
+          <button class="ghost-btn" type="button" onclick="addSemesterRow()">+ Add Semester</button>
+          <button class="primary-btn" type="button" onclick="calculateCgpa()">Calculate CGPA</button>
+        </div>
+      </div>`;
+    for (let i = 0; i < 6; i++) addCourseRow();
+    for (let i = 0; i < 8; i++) addSemesterRow();
+    return;
+  }
+  const two = calc.fields.length > 1 ? ' two' : '';
+  card.innerHTML = `<div class="form-grid${two}">${calc.fields.map(fieldMarkup).join('')}</div>
+    <div class="action-row"><button class="primary-btn" type="button" onclick="calculateCurrent()">${calc.action}</button><button class="ghost-btn" type="button" onclick="resetCurrent()">↺</button></div>`;
+  calc.fields.forEach(f => {
+    if (f.defaultToday) document.getElementById(`field-${f.id}`).valueAsDate = new Date();
+  });
+}
+
+function fieldMarkup(field) {
+  const attrs = [
+    `id="field-${field.id}"`,
+    field.placeholder ? `placeholder="${escapeAttr(field.placeholder)}"` : '',
+    field.value ? `value="${escapeAttr(field.value)}"` : '',
+    field.min !== undefined ? `min="${field.min}"` : '',
+    field.max !== undefined ? `max="${field.max}"` : '',
+    field.step !== undefined ? `step="${field.step}"` : ''
+  ].filter(Boolean).join(' ');
+
+  if (field.type === 'select') {
+    const options = (field.options || []).map(([value, label]) => `<option value="${escapeAttr(value)}"${field.value === value ? ' selected' : ''}>${label}</option>`).join('');
+    return `<div class="field"><label for="field-${field.id}">${field.label}</label><select ${attrs}>${options}</select></div>`;
+  }
+  if (field.type === 'textarea') {
+    return `<div class="field" style="grid-column:1/-1"><label for="field-${field.id}">${field.label}</label><textarea ${attrs}></textarea></div>`;
+  }
+  return `<div class="field"><label for="field-${field.id}">${field.label}</label><input type="${field.type}" ${attrs}></div>`;
+}
+
+function calculateCurrent() {
+  if (!currentCalc) return;
+  try {
+    const out = currentCalc.custom === 'unit' ? calcUnit() : currentCalc.calculate(readValues());
+    showResult(out);
+  } catch (error) {
+    showResult(result('Check input', error.message || 'Please enter valid values.', [], 'error'));
+  }
+}
+
+function readValues() {
+  const values = {};
+  currentCalc.fields.forEach(f => values[f.id] = document.getElementById(`field-${f.id}`).value);
+  return values;
+}
+
+function resetCurrent() {
+  document.querySelectorAll('#toolCard input, #toolCard textarea').forEach(el => el.value = '');
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('memeCard').classList.remove('show');
+  if (currentCalc) renderTool(currentCalc);
+}
+
+function showResult(out) {
+  document.getElementById('resultMain').textContent = out.main;
+  document.getElementById('resultSub').textContent = out.sub || '';
+  document.getElementById('resultGrid').innerHTML = (out.items || []).map(([label, value]) => `<div class="result-item"><div class="result-label">${label}</div><div class="result-value">${value}</div></div>`).join('');
+  document.getElementById('resultCard').classList.add('show');
+  showMeme(out.memeKey || 'default', out.score);
+}
+
+function showMeme(key, score) {
+  const meme = memeBank[key] || memeBank.default;
+  const card = document.getElementById('memeCard');
+  const image = document.getElementById('memeImage');
+  document.getElementById('memeTop').textContent = meme[0];
+  document.getElementById('memeBottom').textContent = score ? `${meme[1]} (${score}%)` : meme[1];
+  document.getElementById('memeFace').textContent = meme[2];
+  if (meme[3]) {
+    image.src = meme[3];
+    image.alt = `${meme[0]} - ${meme[1]}`;
+    card.classList.add('has-image');
+  } else {
+    image.removeAttribute('src');
+    image.alt = '';
+    card.classList.remove('has-image');
+  }
+  card.classList.add('show');
+}
+
+function result(main, sub, items, memeKey, score) {
+  return { main, sub, items, memeKey, score };
+}
+
+const units = {
+  len: { m: 1, km: .001, cm: 100, mm: 1000, inch: 39.3701, ft: 3.28084, mile: .000621371 },
+  wt: { kg: 1, g: 1000, mg: 1000000, lb: 2.20462, oz: 35.274 },
+  spd: { 'm/s': 1, 'km/h': 3.6, mph: 2.23694, knot: 1.94384 },
+  tmp: { C: 1, F: 1, K: 1 }
+};
+
+function updateUnits() {
+  const cat = document.getElementById('field-category').value;
+  const keys = Object.keys(units[cat]);
+  ['from', 'to'].forEach((id, i) => {
+    const el = document.getElementById(`field-${id}`);
+    el.innerHTML = keys.map((u, idx) => `<option value="${u}"${idx === i ? ' selected' : ''}>${u}</option>`).join('');
+  });
+}
+
+function calcUnit() {
+  const cat = document.getElementById('field-category').value;
+  const val = number(document.getElementById('field-value').value);
+  const from = document.getElementById('field-from').value;
+  const to = document.getElementById('field-to').value;
+  if (isNaN(val)) throw new Error('Enter a value to convert.');
+  let converted;
+  if (cat === 'tmp') {
+    const toC = { C: x => x, F: x => (x - 32) * 5 / 9, K: x => x - 273.15 };
+    const fromC = { C: x => x, F: x => x * 9 / 5 + 32, K: x => x + 273.15 };
+    converted = fromC[to](toC[from](val));
+  } else {
+    converted = val / units[cat][from] * units[cat][to];
+  }
+  return result(`${converted.toFixed(5)} ${to}`, `${val} ${from} = ${converted.toFixed(5)} ${to}`, [], 'math');
+}
+
+function switchCgpaMode(mode) {
+  document.querySelectorAll('.mini-tab').forEach((tab, index) => {
+    tab.classList.toggle('active', (mode === 'gpa' && index === 0) || (mode === 'cgpa' && index === 1));
+  });
+  document.getElementById('gpaPanel').classList.toggle('active', mode === 'gpa');
+  document.getElementById('cgpaPanel').classList.toggle('active', mode === 'cgpa');
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('memeCard').classList.remove('show');
+}
+
+function addCourseRow() {
+  const rows = document.getElementById('courseRows');
+  if (!rows) return;
+  const row = document.createElement('div');
+  row.className = 'dynamic-row course-row';
+  row.innerHTML = `<div class="field"><label>Credits</label><select class="course-credit">
+      <option value="">Select</option><option value="1">1</option><option value="1.5">1.5</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+    </select></div>
+    <div class="field"><label>Grade</label><select class="course-grade">
+      <option value="">Select</option>${Object.keys(gradePoints).map(g => `<option value="${g}">${g}</option>`).join('')}
+    </select></div>
+    <button class="remove-btn" type="button" onclick="removeDynamicRow(this)" aria-label="Remove course">×</button>`;
+  rows.appendChild(row);
+}
+
+function addSemesterRow() {
+  const rows = document.getElementById('semesterRows');
+  if (!rows) return;
+  const count = rows.querySelectorAll('.semester-row').length + 1;
+  const row = document.createElement('div');
+  row.className = 'dynamic-row semester-row';
+  row.innerHTML = `<div class="field"><label>Semester ${count} GPA</label><input class="semester-gpa" type="number" min="0" max="10" step="0.01" placeholder="8.50"></div>
+    <div class="field"><label>Credits</label><input class="semester-credit" type="number" min="0" step="0.5" placeholder="22"></div>
+    <button class="remove-btn" type="button" onclick="removeDynamicRow(this)" aria-label="Remove semester">×</button>`;
+  rows.appendChild(row);
+}
+
+function removeDynamicRow(button) {
+  const row = button.closest('.dynamic-row');
+  const wrap = row.parentElement;
+  if (wrap.querySelectorAll('.dynamic-row').length > 1) row.remove();
+}
+
+function calculateGpa() {
+  let totalCredits = 0;
+  let weighted = 0;
+  document.querySelectorAll('.course-row').forEach(row => {
+    const credits = number(row.querySelector('.course-credit').value);
+    const grade = row.querySelector('.course-grade').value;
+    if (credits > 0 && grade in gradePoints) {
+      totalCredits += credits;
+      weighted += credits * gradePoints[grade];
+    }
+  });
+  if (!totalCredits) {
+    showResult(result('Check input', 'Select credits and grades for at least one course.', [], 'error'));
+    return;
+  }
+  const gpa = weighted / totalCredits;
+  showResult(result(gpa.toFixed(2), 'Your instant GPA from selected courses.', [
+    ['Total credits', totalCredits],
+    ['Grade points', weighted.toFixed(1)]
+  ], chooseCgpaMeme(gpa)));
+}
+
+function calculateCgpa() {
+  let totalCredits = 0;
+  let weighted = 0;
+  document.querySelectorAll('.semester-row').forEach(row => {
+    const gpa = number(row.querySelector('.semester-gpa').value);
+    const credits = number(row.querySelector('.semester-credit').value);
+    if (gpa >= 0 && gpa <= 10 && credits > 0) {
+      totalCredits += credits;
+      weighted += gpa * credits;
+    }
+  });
+  if (!totalCredits) {
+    showResult(result('Check input', 'Enter GPA and credits for at least one semester.', [], 'error'));
+    return;
+  }
+  const cgpa = weighted / totalCredits;
+  showResult(result(cgpa.toFixed(2), 'Your weighted CGPA across semesters.', [
+    ['Total credits', totalCredits],
+    ['Weighted points', weighted.toFixed(2)]
+  ], chooseCgpaMeme(cgpa)));
+}
+
+function chooseCgpaMeme(score) {
+  if (score >= 9.5) return 'cgpa-small-win';
+  if (score >= 9) return 'cgpa-secret';
+  if (score >= 8.5) return 'cgpa-knowledge';
+  if (score >= 8) return 'cgpa-math';
+  if (score >= 7.5) return 'cgpa-prepare';
+  if (score >= 7) return 'cgpa-reality';
+  if (score >= 6.5) return 'cgpa-end-sem';
+  if (score >= 6) return 'cgpa-energy-low';
+  if (score >= 5) return 'cgpa-still-low';
+  return 'cgpa-low';
+}
+
+function pressKey(k) {
+  const ops = ['+', '-', '*', '/'];
+  if (k === 'AC') { calcExpr = '0'; calcPrev = ''; justEval = false; }
+  else if (k === '±') { calcExpr = calcExpr.startsWith('-') ? calcExpr.slice(1) : '-' + calcExpr; }
+  else if (k === '%') { safeEval(expr => String(expr / 100)); }
+  else if (k === '=') {
+    const before = calcExpr;
+    safeEval(expr => String(expr));
+    calcPrev = `${before} =`;
+    showResult(result(calcExpr, 'Basic calculator result.', [], 'math'));
+    justEval = true;
+  } else {
+    if (justEval && !ops.includes(k)) calcExpr = k;
+    else if (calcExpr === '0' && !ops.includes(k)) calcExpr = k;
+    else calcExpr += k;
+    justEval = false;
+  }
+  document.getElementById('calcExpr').textContent = calcExpr;
+  document.getElementById('calcPrev').textContent = calcPrev;
+}
+
+function safeEval(transform) {
+  try {
+    const value = Function(`"use strict"; return (${calcExpr})`)();
+    calcExpr = transform(value);
+  } catch {
+    calcExpr = 'Error';
+  }
+}
+
+function incomeTax(taxable, regime) {
+  const slabs = regime === 'new'
+    ? [[300000, 0], [400000, .05], [300000, .1], [300000, .15], [300000, .2], [Infinity, .3]]
+    : [[250000, 0], [250000, .05], [500000, .2], [Infinity, .3]];
+  let rem = taxable;
+  let tax = 0;
+  for (const [limit, rate] of slabs) {
+    const chunk = Math.min(rem, limit);
+    tax += chunk * rate;
+    rem -= chunk;
+    if (rem <= 0) break;
+  }
+  return Math.max(0, tax) * 1.04;
+}
+
+function filterCards(query) {
+  const q = query.toLowerCase().trim();
+  let visible = 0;
+  document.querySelectorAll('.calc-card').forEach(card => {
+    const match = !q || card.dataset.tags.toLowerCase().includes(q) || card.innerText.toLowerCase().includes(q);
+    card.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  document.querySelectorAll('#homeSections section').forEach(section => {
+    const any = [...section.querySelectorAll('.calc-card')].some(card => card.style.display !== 'none');
+    section.style.display = any ? '' : 'none';
+  });
+  document.getElementById('emptyState').style.display = visible ? 'none' : 'block';
+}
+
+function focusSearch() {
+  if (!document.getElementById('homePage').classList.contains('active')) goHome();
+  setTimeout(() => document.getElementById('searchInput').focus(), 50);
+}
+
+function number(value) {
+  return Number(value);
+}
+
+function requireValues(...values) {
+  if (values.some(v => !Number.isFinite(v) || v === 0)) throw new Error('Please enter all required numbers.');
+}
+
+function money(value) {
+  return '₹' + Math.round(value).toLocaleString('en-IN');
+}
+
+function escapeAttr(value) {
+  return String(value).replace(/"/g, '&quot;');
+}
+
+init();
+</script>
+</body>
+</html>
