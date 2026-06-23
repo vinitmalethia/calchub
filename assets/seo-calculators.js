@@ -6,6 +6,11 @@ function money(value) {
 
 function showResult(main, sub, items = []) {
   const box = document.getElementById('result');
+  const meme = document.getElementById('cgpaMeme');
+  if (meme) {
+    meme.classList.remove('show');
+    meme.removeAttribute('src');
+  }
   document.getElementById('resultMain').textContent = main;
   document.getElementById('resultSub').textContent = sub;
   document.getElementById('resultItems').innerHTML = items.map(([label, value]) => (
@@ -79,6 +84,19 @@ function calcCgpa() {
     ['Total credits', credits],
     ['Weighted points', points.toFixed(2)]
   ]);
+  showCgpaMeme(cgpa);
+}
+
+function showCgpaMeme(score) {
+  const meme = document.getElementById('cgpaMeme');
+  if (!meme) return;
+  let src = '../assets/memes/meme_1.png';
+  if (score >= 9) src = '../assets/memes/meme_4.png';
+  else if (score >= 7) src = '../assets/memes/meme_7.png';
+  else if (score >= 5) src = '../assets/memes/meme_8.png';
+  else src = '../assets/memes/meme_1.png';
+  meme.src = src;
+  meme.classList.add('show');
 }
 
 function calcPercentage() {

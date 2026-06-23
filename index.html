@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="CalcHub - mobile-friendly calculators with fun meme reactions for every result.">
+<meta name="description" content="CalcHub offers free online student calculators for CGPA, GPA, percentage, grades and study hours.">
 <title>CGPA Calculator - Free Online CGPA Calculator for Students</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -276,6 +276,7 @@
   .card-icon.finance { background: var(--yellow); }
   .card-icon.math { background: var(--cyan); }
   .card-icon.daily { background: var(--pink); }
+  .card-icon.student { background: var(--cyan); }
 
   .calc-card h3 {
     margin: 0 0 4px;
@@ -684,24 +685,24 @@
     <main>
       <section class="home-page active" id="homePage">
         <div class="home-hero">
-          <span class="eyebrow">Free • Fast • Meme Results</span>
-          <h1>Calculators that answer fast and make results less boring.</h1>
-          <p class="lead">Pick a calculator, use it on its own page, and get a tiny meme reaction with the answer. Built mobile-first for quick use on phones.</p>
+          <span class="eyebrow">Free Student Calculators</span>
+          <h1>CGPA, GPA, percentage and grade calculators for students.</h1>
+          <p class="lead">Focused academic calculators with clear formulas, examples and instant results. Built mobile-first for quick use during exams and result season.</p>
           <label class="search-wrap" for="searchInput">
             <span>⌕</span>
-            <input id="searchInput" type="search" placeholder="Search BMI, EMI, age, percentage..." oninput="filterCards(this.value)">
+            <input id="searchInput" type="search" placeholder="Search CGPA, GPA, percentage, grade..." oninput="filterCards(this.value)">
           </label>
         </div>
 
         <div class="quick-stats">
-          <div class="stat"><strong id="totalTools">12</strong><span>calculators</span></div>
+          <div class="stat"><strong id="totalTools">5</strong><span>student tools</span></div>
           <div class="stat"><strong>0</strong><span>signups needed</span></div>
           <div class="stat"><strong>100%</strong><span>runs in browser</span></div>
-          <div class="stat"><strong>🙂</strong><span>meme after results</span></div>
+          <div class="stat"><strong>SEO</strong><span>formula pages</span></div>
         </div>
 
         <div id="homeSections"></div>
-        <div class="empty-state" id="emptyState">No calculator found. Try searching for BMI, loan, age, tip, discount or words.</div>
+        <div class="empty-state" id="emptyState">No calculator found. Try searching for CGPA, GPA, percentage, grade or study hours.</div>
       </section>
 
       <section class="calculator-page" id="calculatorPage" aria-live="polite">
@@ -738,289 +739,39 @@
 
 <script>
 const categories = {
-  health: { title: 'Health Calculators', emoji: '💪' },
-  finance: { title: 'Money Calculators', emoji: '💰' },
-  math: { title: 'Math & Conversion', emoji: '🔢' },
-  daily: { title: 'Daily & Fun Tools', emoji: '✨' }
+  student: { title: 'Student Calculators', emoji: '🎓' }
 };
 
 const calculators = [
   {
-    id: 'bmi', category: 'health', icon: '⚖️', title: 'BMI Calculator',
-    desc: 'Check body mass index using weight and height.',
-    tags: 'bmi body mass index weight height health',
-    fields: [
-      { id: 'weight', label: 'Weight (kg)', type: 'number', placeholder: '70', min: 1 },
-      { id: 'height', label: 'Height (cm)', type: 'number', placeholder: '170', min: 1 }
-    ],
-    action: 'Calculate BMI',
-    calculate: values => {
-      const w = number(values.weight), h = number(values.height) / 100;
-      requireValues(w, h);
-      const bmi = w / (h * h);
-      const status = bmi < 18.5 ? 'Underweight' : bmi < 25 ? 'Normal weight' : bmi < 30 ? 'Overweight' : 'Obese';
-      return result(`${bmi.toFixed(1)} kg/m²`, status, [
-        ['Status', status],
-        ['Ideal range', '18.5 - 24.9']
-      ], status === 'Normal weight' ? 'healthy' : 'steady');
-    }
+    id: 'cgpa', category: 'student', icon: '🎓', title: 'CGPA Calculator',
+    desc: 'Semester-wise CGPA calculator with formula and examples.',
+    tags: 'cgpa calculator semester gpa credits student',
+    page: 'cgpa-calculator/'
   },
   {
-    id: 'age', category: 'health', icon: '🎂', title: 'Age Calculator',
-    desc: 'Exact age in years, months and days.',
-    tags: 'age birthday dob years months days',
-    fields: [
-      { id: 'dob', label: 'Date of birth', type: 'date' },
-      { id: 'ref', label: 'Calculate age on', type: 'date', defaultToday: true }
-    ],
-    action: 'Calculate Age',
-    calculate: values => {
-      const dob = new Date(values.dob);
-      const ref = values.ref ? new Date(values.ref) : new Date();
-      if (isNaN(dob) || dob > ref) throw new Error('Enter a valid birth date.');
-      let y = ref.getFullYear() - dob.getFullYear();
-      let m = ref.getMonth() - dob.getMonth();
-      let d = ref.getDate() - dob.getDate();
-      if (d < 0) { m--; d += new Date(ref.getFullYear(), ref.getMonth(), 0).getDate(); }
-      if (m < 0) { y--; m += 12; }
-      const totalDays = Math.floor((ref - dob) / 86400000);
-      const next = new Date(ref.getFullYear(), dob.getMonth(), dob.getDate());
-      if (next <= ref) next.setFullYear(ref.getFullYear() + 1);
-      const daysToNext = Math.ceil((next - ref) / 86400000);
-      return result(`${y} years, ${m} months, ${d} days`, 'Age is just your level number.', [
-        ['Total months', y * 12 + m],
-        ['Total days', totalDays.toLocaleString()],
-        ['Next birthday', `in ${daysToNext} days`],
-        ['Born on', dob.toLocaleDateString('en-US', { weekday: 'long' })]
-      ], y >= 18 ? 'grown' : 'young');
-    }
-  },
-  {
-    id: 'calorie', category: 'health', icon: '🔥', title: 'Calorie Calculator',
-    desc: 'Estimate daily maintenance calories.',
-    tags: 'calorie bmr tdee weight loss gain',
-    fields: [
-      { id: 'age', label: 'Age', type: 'number', placeholder: '25', min: 1 },
-      { id: 'gender', label: 'Gender', type: 'select', options: [['m', 'Male'], ['f', 'Female']] },
-      { id: 'weight', label: 'Weight (kg)', type: 'number', placeholder: '70', min: 1 },
-      { id: 'height', label: 'Height (cm)', type: 'number', placeholder: '170', min: 1 },
-      { id: 'activity', label: 'Activity level', type: 'select', options: [['1.2', 'Sedentary'], ['1.375', 'Light'], ['1.55', 'Moderate'], ['1.725', 'Active'], ['1.9', 'Very active']], value: '1.55' }
-    ],
-    action: 'Calculate Calories',
-    calculate: values => {
-      const age = number(values.age), w = number(values.weight), h = number(values.height), act = number(values.activity);
-      requireValues(age, w, h, act);
-      const bmr = values.gender === 'm' ? 88.36 + 13.4 * w + 4.8 * h - 5.7 * age : 447.6 + 9.2 * w + 3.1 * h - 4.3 * age;
-      const tdee = Math.round(bmr * act);
-      return result(`${tdee.toLocaleString()} kcal/day`, 'Estimated maintenance calories.', [
-        ['Weight loss target', `${(tdee - 500).toLocaleString()} kcal/day`],
-        ['Weight gain target', `${(tdee + 500).toLocaleString()} kcal/day`]
-      ], 'food');
-    }
-  },
-  {
-    id: 'emi', category: 'finance', icon: '🏦', title: 'EMI Calculator',
-    desc: 'Monthly EMI for loans with interest.',
-    tags: 'emi loan interest home car personal finance',
-    fields: [
-      { id: 'principal', label: 'Loan amount (₹)', type: 'number', placeholder: '500000', min: 1 },
-      { id: 'rate', label: 'Interest rate (%/year)', type: 'number', placeholder: '8.5', min: 0, step: .1 },
-      { id: 'months', label: 'Tenure (months)', type: 'number', placeholder: '60', min: 1 }
-    ],
-    action: 'Calculate EMI',
-    calculate: values => {
-      const p = number(values.principal), r = number(values.rate) / 12 / 100, n = number(values.months);
-      requireValues(p, n);
-      const emi = r === 0 ? p / n : p * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
-      const total = emi * n;
-      return result(`${money(emi)}/mo`, 'Your estimated monthly payment.', [
-        ['Total payment', money(total)],
-        ['Total interest', money(total - p)]
-      ], emi > 50000 ? 'money-big' : 'money');
-    }
-  },
-  {
-    id: 'salary', category: 'finance', icon: '💼', title: 'Salary Calculator',
-    desc: 'CTC to monthly in-hand estimate.',
-    tags: 'salary ctc income tax take home pf',
-    fields: [
-      { id: 'ctc', label: 'Annual CTC (₹)', type: 'number', placeholder: '1200000', min: 1 },
-      { id: 'pf', label: 'PF (% of basic)', type: 'number', value: '12', min: 0, max: 100 },
-      { id: 'regime', label: 'Tax regime', type: 'select', options: [['new', 'New regime'], ['old', 'Old regime']] }
-    ],
-    action: 'Estimate Salary',
-    calculate: values => {
-      const ctc = number(values.ctc), pfPct = number(values.pf) / 100;
-      requireValues(ctc);
-      const basic = ctc * .4;
-      const pf = basic * pfPct * 12;
-      const deduction = values.regime === 'new' ? 75000 : 150000;
-      const taxable = Math.max(0, ctc - pf - deduction);
-      const tax = incomeTax(taxable, values.regime);
-      const annual = ctc - pf - tax;
-      return result(money(annual / 12), 'Estimated monthly in-hand.', [
-        ['Annual in-hand', money(annual)],
-        ['Estimated tax', money(tax)],
-        ['PF deduction', money(pf)],
-        ['Basic salary', money(basic)]
-      ], annual / 12 > 100000 ? 'salary-big' : 'salary');
-    }
-  },
-  {
-    id: 'sip', category: 'finance', icon: '📈', title: 'SIP Calculator',
-    desc: 'Estimate mutual fund SIP maturity value.',
-    tags: 'sip mutual fund investment return wealth',
-    fields: [
-      { id: 'monthly', label: 'Monthly SIP (₹)', type: 'number', placeholder: '5000', min: 1 },
-      { id: 'rate', label: 'Expected return (%/year)', type: 'number', placeholder: '12', min: 0, step: .5 },
-      { id: 'years', label: 'Time period (years)', type: 'number', placeholder: '10', min: 1 }
-    ],
-    action: 'Calculate Returns',
-    calculate: values => {
-      const m = number(values.monthly), r = number(values.rate) / 12 / 100, n = number(values.years) * 12;
-      requireValues(m, n);
-      const corpus = r === 0 ? m * n : m * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
-      const invested = m * n;
-      return result(money(corpus), 'Estimated corpus at maturity.', [
-        ['Invested amount', money(invested)],
-        ['Estimated gains', money(corpus - invested)]
-      ], corpus - invested > invested ? 'profit' : 'money');
-    }
-  },
-  {
-    id: 'percentage', category: 'math', icon: '%', title: 'Percentage Calculator',
+    id: 'percentage', category: 'student', icon: '%', title: 'Percentage Calculator',
     desc: 'Percent of, percent share and percent change.',
     tags: 'percentage percent increase decrease math',
-    page: 'percentage-calculator/',
-    fields: [
-      { id: 'mode', label: 'Mode', type: 'select', options: [['of', 'X% of Y'], ['is', 'X is what % of Y'], ['change', '% change from X to Y']] },
-      { id: 'x', label: 'X', type: 'number', placeholder: '15' },
-      { id: 'y', label: 'Y', type: 'number', placeholder: '200' }
-    ],
-    action: 'Calculate Percentage',
-    calculate: values => {
-      const x = number(values.x), y = number(values.y);
-      requireValues(x, y);
-      if (values.mode === 'of') return result((x / 100 * y).toFixed(2), `${x}% of ${y}`, [], 'math');
-      if (values.mode === 'is') return result(`${(x / y * 100).toFixed(2)}%`, `${x} is this percent of ${y}`, [], 'math');
-      return result(`${((y - x) / x * 100).toFixed(2)}%`, `Change from ${x} to ${y}`, [], y >= x ? 'profit' : 'oops');
-    }
+    page: 'percentage-calculator/'
   },
   {
-    id: 'unit', category: 'math', icon: '↔', title: 'Unit Converter',
-    desc: 'Convert length, weight, temperature and speed.',
-    tags: 'unit converter length weight temperature speed',
-    custom: 'unit'
-  },
-  {
-    id: 'basic', category: 'math', icon: '🧮', title: 'Basic Calculator',
-    desc: 'Fast phone-friendly arithmetic keypad.',
-    tags: 'calculator basic arithmetic plus minus multiply divide',
-    custom: 'basic'
-  },
-  {
-    id: 'discount', category: 'daily', icon: '🏷️', title: 'Discount Calculator',
-    desc: 'Final price and savings on shopping.',
-    tags: 'discount sale price shopping savings',
-    fields: [
-      { id: 'price', label: 'Original price (₹)', type: 'number', placeholder: '1999', min: 0 },
-      { id: 'discount', label: 'Discount (%)', type: 'number', placeholder: '20', min: 0, max: 100 }
-    ],
-    action: 'Calculate Discount',
-    calculate: values => {
-      const p = number(values.price), d = number(values.discount);
-      requireValues(p);
-      const save = p * d / 100;
-      return result(money(p - save), 'Final price after discount.', [
-        ['You save', money(save)],
-        ['Discount', `${d}%`]
-      ], d >= 50 ? 'deal' : 'shopping');
-    }
-  },
-  {
-    id: 'tip', category: 'daily', icon: '🍽️', title: 'Tip Calculator',
-    desc: 'Split restaurant bill with tip.',
-    tags: 'tip bill split restaurant food',
-    fields: [
-      { id: 'bill', label: 'Bill amount (₹)', type: 'number', placeholder: '1200', min: 0 },
-      { id: 'tip', label: 'Tip (%)', type: 'number', placeholder: '15', min: 0 },
-      { id: 'split', label: 'Split between', type: 'number', placeholder: '2', min: 1 }
-    ],
-    action: 'Calculate Tip',
-    calculate: values => {
-      const bill = number(values.bill), tipPct = number(values.tip), split = number(values.split) || 1;
-      requireValues(bill);
-      const tip = bill * tipPct / 100, total = bill + tip;
-      return result(money(total / split), 'Each person pays this much.', [
-        ['Tip amount', money(tip)],
-        ['Total bill', money(total)]
-      ], split > 4 ? 'group' : 'food');
-    }
-  },
-  {
-    id: 'love', category: 'daily', icon: '❤️', title: 'Love Calculator',
-    desc: 'Fun name compatibility score.',
-    tags: 'love compatibility name couple fun',
-    fields: [
-      { id: 'a', label: 'Your name', type: 'text', placeholder: 'Your name' },
-      { id: 'b', label: "Partner's name", type: 'text', placeholder: 'Their name' }
-    ],
-    action: 'Check Compatibility',
-    calculate: values => {
-      const a = values.a.trim(), b = values.b.trim();
-      if (!a || !b) throw new Error('Enter both names.');
-      let hash = 0;
-      for (const ch of (a + b).toLowerCase()) hash = (hash * 31 + ch.charCodeAt(0)) % 100;
-      const score = Math.max(32, hash);
-      const msg = score >= 90 ? 'Soulmate energy detected.' : score >= 70 ? 'Strong chemistry.' : score >= 50 ? 'Cute potential.' : 'Opposites can still be interesting.';
-      return result(`${score}% match`, msg, [['Compatibility', `${score}/100`]], score >= 80 ? 'love-high' : 'love', score);
-    }
-  },
-  {
-    id: 'cgpa', category: 'daily', icon: '🎓', title: 'CGPA Calculator',
-    desc: 'Instant GPA from grades and CGPA from semesters.',
-    tags: 'cgpa gpa vit credits grades semester course s a b c d e f',
-    page: 'cgpa-calculator/',
-    custom: 'cgpa'
-  },
-  {
-    id: 'gpa-page', category: 'daily', icon: '📚', title: 'GPA Calculator',
+    id: 'gpa-page', category: 'student', icon: '📚', title: 'GPA Calculator',
     desc: 'Course credits and grade points GPA.',
     tags: 'gpa grade points credits course semester',
     page: 'gpa-calculator/'
   },
   {
-    id: 'grade-page', category: 'daily', icon: '🏅', title: 'Grade Calculator',
+    id: 'grade-page', category: 'student', icon: '🏅', title: 'Grade Calculator',
     desc: 'Marks to percentage and letter grade.',
     tags: 'grade calculator marks percentage pass fail',
     page: 'grade-calculator/'
   },
   {
-    id: 'study-hours-page', category: 'daily', icon: '⏱️', title: 'Study Hours Calculator',
+    id: 'study-hours-page', category: 'student', icon: '⏱️', title: 'Study Hours Calculator',
     desc: 'Plan daily study time before exams.',
     tags: 'study hours calculator exam planner subjects revision',
     page: 'study-hours-calculator/'
-  },
-  {
-    id: 'words', category: 'daily', icon: '📝', title: 'Word Counter',
-    desc: 'Words, characters, sentences and reading time.',
-    tags: 'word count character text reading time',
-    fields: [
-      { id: 'text', label: 'Paste your text', type: 'textarea', placeholder: 'Type or paste text here...' }
-    ],
-    action: 'Count Words',
-    calculate: values => {
-      const txt = values.text || '';
-      const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
-      const chars = txt.length;
-      const sentences = txt.split(/[.!?]+/).filter(s => s.trim()).length;
-      const readTime = words < 200 ? '<1 min' : `${Math.ceil(words / 200)} min`;
-      return result(`${words.toLocaleString()} words`, 'Text stats are ready.', [
-        ['Characters', chars.toLocaleString()],
-        ['Sentences', sentences],
-        ['Reading time', readTime]
-      ], words > 500 ? 'writer' : 'words');
-    }
   }
 ];
 

@@ -91,6 +91,8 @@ input, select {
 .result.show { display: block; }
 .result-main { font: 900 1.8rem var(--mono); overflow-wrap: anywhere; }
 .result-sub { margin-top: 5px; color: var(--muted); line-height: 1.5; }
+.result-meme { display: none; width: 100%; margin-top: 14px; border: 1px solid var(--line); border-radius: var(--radius); background: #0f1e25; }
+.result-meme.show { display: block; }
 .mini-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
 .mini { padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-2); }
 .mini span { display: block; color: var(--muted); font: 800 .68rem var(--mono); text-transform: uppercase; }
