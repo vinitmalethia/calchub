@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free GPA calculator using course credits and letter grades. Calculate weighted GPA with formula, example and FAQ.">
+  <title>GPA Calculator - Course Credits and Grades | CalcHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/seo-pages.css">
+</head>
+<body data-page="gpa">
+  <div class="wrap">
+    <header class="topbar"><a class="brand" href="../index.html"><span class="brand-mark">=</span><span>CalcHub</span></a><a class="home-link" href="../index.html">Home</a></header>
+    <main>
+      <section class="hero"><span class="eyebrow">Grade Point Tool</span><h1>GPA Calculator</h1><p class="lead">Calculate semester GPA from course credits and grades. Add your subjects, select the grade earned in each course, and get a weighted GPA instantly.</p></section>
+      <section class="layout">
+        <div class="card tool">
+          <div id="courseRows"></div>
+          <div class="actions"><button class="btn" type="button" onclick="calcGpa()">Calculate GPA</button><button class="btn ghost" type="button" onclick="addCourseRow()">+ Add Course</button></div>
+          <div class="result" id="result"><div class="result-main" id="resultMain"></div><div class="result-sub" id="resultSub"></div><div class="mini-grid" id="resultItems"></div></div>
+        </div>
+        <aside class="card content"><h2>Formula</h2><div class="formula">GPA = Σ(Course Credits × Grade Points) / Σ(Course Credits)</div><h2>Example</h2><p>For 4 credits with S grade, 3 credits with A grade and 2 credits with B grade: GPA = (4×10 + 3×9 + 2×8) / 9 = 9.22.</p></aside>
+      </section>
+      <article class="card content article">
+        <h2>How This GPA Calculator Works</h2>
+        <p>A GPA calculator converts course grades into a single weighted semester score. Instead of treating every subject equally, it uses credits to decide how much each subject should affect the final result. A four-credit subject has more academic weight than a one-credit lab or seminar, so its grade should contribute more to the GPA. This is why a weighted GPA is more accurate than a simple average of grade points.</p>
+        <p>To use the calculator, add each course, select the credit value and choose the grade you received. The page uses a common ten-point scale: S = 10, A = 9, B = 8, C = 7, D = 6, E = 5 and F = 0. If your university uses different grade points, you can still use the formula shown here and adjust the grade values manually when comparing results.</p>
+        <p>This GPA page is useful before results are officially compiled, when you want to estimate how a subject may affect your semester score, or when planning how many credits you need to improve your average. The calculator is especially helpful for students in credit-based systems because it shows total credits and weighted grade points along with the final GPA. Always compare final numbers with your official transcript, as universities may apply special rules for backlogs, repeated courses or pass/fail subjects.</p>
+        <h2>FAQ</h2>
+        <div class="faq">
+          <details><summary>What grade scale does this GPA calculator use?</summary><p>It uses S=10, A=9, B=8, C=7, D=6, E=5 and F=0.</p></details>
+          <details><summary>Should I add zero-credit subjects?</summary><p>No. Zero-credit subjects do not affect weighted GPA unless your university has a special rule.</p></details>
+          <details><summary>Can I calculate CGPA here?</summary><p>This page is for course GPA. Use the CGPA calculator for semester-wise cumulative GPA.</p></details>
+        </div>
+      </article>
+    </main>
+    <footer>More tools: <a href="../cgpa-calculator/">CGPA Calculator</a> · <a href="../grade-calculator/">Grade Calculator</a></footer>
+  </div>
+  <script src="../assets/seo-calculators.js"></script>
+</body>
+</html>

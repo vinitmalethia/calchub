@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free grade calculator to convert marks into percentage, letter grade and pass status with formula and examples.">
+  <title>Grade Calculator - Marks to Percentage and Grade | CalcHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/seo-pages.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar"><a class="brand" href="../index.html"><span class="brand-mark">=</span><span>CalcHub</span></a><a class="home-link" href="../index.html">Home</a></header>
+    <main>
+      <section class="hero"><span class="eyebrow">Marks Calculator</span><h1>Grade Calculator</h1><p class="lead">Convert marks and total marks into percentage, estimated letter grade and pass status. Use it for tests, assignments, internal exams and quick result checks.</p></section>
+      <section class="layout">
+        <div class="card tool">
+          <div class="row"><div class="field"><label>Marks obtained</label><input id="marks" type="number" placeholder="82"></div><div class="field"><label>Total marks</label><input id="total" type="number" placeholder="100"></div></div>
+          <button class="btn" type="button" onclick="calcGrade()">Calculate Grade</button>
+          <div class="result" id="result"><div class="result-main" id="resultMain"></div><div class="result-sub" id="resultSub"></div><div class="mini-grid" id="resultItems"></div></div>
+        </div>
+        <aside class="card content"><h2>Formula</h2><div class="formula">Percentage = Marks Obtained / Total Marks × 100</div><h2>Example</h2><p>If you scored 82 out of 100, percentage = 82/100 × 100 = 82%. With the default scale, 82% is grade A.</p></aside>
+      </section>
+      <article class="card content article">
+        <h2>How This Grade Calculator Works</h2>
+        <p>A grade calculator helps students convert raw marks into a more readable academic result. Teachers and colleges may show results as marks, percentages, letter grades or grade points. This page starts with the simplest and most common information: marks obtained and total marks. From those two values it calculates the percentage and then maps the percentage to an estimated letter grade.</p>
+        <p>The default scale used here is A+ for 90% and above, A for 80-89%, B for 70-79%, C for 60-69%, D for 50-59%, E for 40-49% and F below 40%. This scale is a general estimate, not a replacement for your school or university rules. Some institutions use different cutoffs, relative grading, grace marks, practical marks or credit-based systems, so official results may vary.</p>
+        <p>This calculator is still useful because it gives an instant idea of performance. You can use it after a class test, before submitting an assignment, or while checking how many marks you need to reach a target percentage. If your exam has multiple sections, calculate the total marks obtained first, add the maximum marks, and then enter both totals here. For final academic reporting, always verify the grade scale from your institution.</p>
+        <h2>FAQ</h2>
+        <div class="faq">
+          <details><summary>How do I calculate grade percentage?</summary><p>Divide marks obtained by total marks and multiply by 100.</p></details>
+          <details><summary>Is the letter grade official?</summary><p>No. It is an estimate based on a common percentage scale.</p></details>
+          <details><summary>Can I use this for assignments?</summary><p>Yes, as long as you know marks obtained and total marks.</p></details>
+        </div>
+      </article>
+    </main>
+    <footer>More tools: <a href="../percentage-calculator/">Percentage Calculator</a> · <a href="../gpa-calculator/">GPA Calculator</a></footer>
+  </div>
+  <script src="../assets/seo-calculators.js"></script>
+</body>
+</html>

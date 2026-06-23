@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free percentage calculator for X percent of Y, percentage share and percentage change with formulas and examples.">
+  <title>Percentage Calculator - Percent Of, Percent Change | CalcHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/seo-pages.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar"><a class="brand" href="../index.html"><span class="brand-mark">=</span><span>CalcHub</span></a><a class="home-link" href="../index.html">Home</a></header>
+    <main>
+      <section class="hero"><span class="eyebrow">Math Calculator</span><h1>Percentage Calculator</h1><p class="lead">Calculate percentages in three common ways: X% of Y, X is what percent of Y, and percentage increase or decrease from an old value to a new value.</p></section>
+      <section class="layout">
+        <div class="card tool">
+          <div class="field"><label>Mode</label><select id="mode"><option value="of">X% of Y</option><option value="is">X is what % of Y</option><option value="change">% change from X to Y</option></select></div>
+          <div class="row"><div class="field"><label>X</label><input id="x" type="number" placeholder="15"></div><div class="field"><label>Y</label><input id="y" type="number" placeholder="200"></div></div>
+          <button class="btn" type="button" onclick="calcPercentage()">Calculate Percentage</button>
+          <div class="result" id="result"><div class="result-main" id="resultMain"></div><div class="result-sub" id="resultSub"></div><div class="mini-grid" id="resultItems"></div></div>
+        </div>
+        <aside class="card content"><h2>Formula</h2><div class="formula">Percent of = X/100 × Y<br>Percent share = X/Y × 100<br>Change = (New - Old)/Old × 100</div><h2>Example</h2><p>15% of 200 is 30. If 30 is compared to 200, then 30 is 15% of 200. If a value rises from 200 to 250, the increase is 25%.</p></aside>
+      </section>
+      <article class="card content article">
+        <h2>How This Percentage Calculator Works</h2>
+        <p>A percentage calculator is useful whenever a number needs to be understood as a part of one hundred. Percentages appear in marks, discounts, tax, salary hikes, interest rates, statistics, exam results and business reports. This page combines the three most common percentage tasks in one focused calculator so you do not need separate tools for each small calculation.</p>
+        <p>The first mode, X% of Y, answers questions like “What is 18% of 750?” It divides X by 100 and multiplies the result by Y. The second mode, X is what percent of Y, compares one value with another. It is useful for marks, completion rates and contribution percentages. The third mode calculates percentage change, which tells you how much a value increased or decreased compared with its original value.</p>
+        <p>When using percentage change, the old value should go in X and the new value should go in Y. A positive result means an increase, while a negative result means a decrease. The formula depends on the old value, so the old value cannot be zero. For real-life use, round percentages according to the context. Marks may need two decimals, while shopping discounts usually work fine as whole numbers.</p>
+        <h2>FAQ</h2>
+        <div class="faq">
+          <details><summary>What is 10 percent of 500?</summary><p>10% of 500 is 50 because 10/100 × 500 = 50.</p></details>
+          <details><summary>How do I calculate percentage increase?</summary><p>Subtract old from new, divide by old, then multiply by 100.</p></details>
+          <details><summary>Can percentage change be negative?</summary><p>Yes. A negative percentage means the value decreased.</p></details>
+        </div>
+      </article>
+    </main>
+    <footer>More tools: <a href="../grade-calculator/">Grade Calculator</a> · <a href="../study-hours-calculator/">Study Hours Calculator</a></footer>
+  </div>
+  <script src="../assets/seo-calculators.js"></script>
+</body>
+</html>

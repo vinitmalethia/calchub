@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vinitmalethia.github.io/calchub/sitemap.xml

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free study hours calculator to plan daily study time from subjects, chapters, revision hours and days left.">
+  <title>Study Hours Calculator - Daily Study Planner | CalcHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/seo-pages.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar"><a class="brand" href="../index.html"><span class="brand-mark">=</span><span>CalcHub</span></a><a class="home-link" href="../index.html">Home</a></header>
+    <main>
+      <section class="hero"><span class="eyebrow">Study Planner</span><h1>Study Hours Calculator</h1><p class="lead">Plan how many hours you should study each day based on subjects, chapters, revision time and the number of days left before your exam.</p></section>
+      <section class="layout">
+        <div class="card tool">
+          <div class="row"><div class="field"><label>Subjects</label><input id="subjects" type="number" placeholder="5"></div><div class="field"><label>Days left</label><input id="days" type="number" placeholder="20"></div></div>
+          <div class="row"><div class="field"><label>Hours per subject</label><input id="chapters" type="number" placeholder="12"></div><div class="field"><label>Revision hours</label><input id="revision" type="number" placeholder="20"></div></div>
+          <button class="btn" type="button" onclick="calcStudyHours()">Calculate Study Hours</button>
+          <div class="result" id="result"><div class="result-main" id="resultMain"></div><div class="result-sub" id="resultSub"></div><div class="mini-grid" id="resultItems"></div></div>
+        </div>
+        <aside class="card content"><h2>Formula</h2><div class="formula">Daily Hours = (Subjects × Hours per Subject + Revision Hours) / Days Left</div><h2>Example</h2><p>For 5 subjects, 12 hours per subject, 20 revision hours and 20 days left: daily hours = (5×12 + 20) / 20 = 4 hours/day.</p></aside>
+      </section>
+      <article class="card content article">
+        <h2>How This Study Hours Calculator Works</h2>
+        <p>A study hours calculator turns a vague exam plan into a daily target. Most students know they need to study, but the plan becomes stressful when the total workload is not clear. This page estimates the total hours needed by multiplying the number of subjects by the planned hours per subject, then adding extra revision time. The final total is divided by the number of days left to produce a daily study target.</p>
+        <p>The “hours per subject” field can mean chapter study time, lecture revision time or topic preparation time, depending on how you plan. For example, if each subject needs around twelve focused hours, enter 12. If one subject is harder than the others, you can either increase the average or calculate that subject separately. Revision hours should include mock tests, formula review, practice questions and final reading.</p>
+        <p>This calculator gives a practical estimate, not a strict rule. If the result says six hours per day, you can split it into morning, afternoon and evening sessions. Keep breaks between sessions and leave buffer time for difficult topics. A realistic plan is better than an aggressive plan that fails after two days. Recalculate whenever your syllabus changes, an exam is postponed, or you finish a subject earlier than expected.</p>
+        <h2>FAQ</h2>
+        <div class="faq">
+          <details><summary>How many hours should I study per day?</summary><p>It depends on workload and days left. This calculator divides your total study target by available days.</p></details>
+          <details><summary>Should revision be separate?</summary><p>Yes. Revision, mock tests and practice need dedicated time beyond first-time study.</p></details>
+          <details><summary>Can I use this for competitive exams?</summary><p>Yes. Treat subjects as exam sections and enter estimated hours for each section.</p></details>
+        </div>
+      </article>
+    </main>
+    <footer>More tools: <a href="../cgpa-calculator/">CGPA Calculator</a> · <a href="../percentage-calculator/">Percentage Calculator</a></footer>
+  </div>
+  <script src="../assets/seo-calculators.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free CGPA calculator for semester GPA and credits. Calculate weighted CGPA instantly with formula, examples and FAQs.">
+  <title>CGPA Calculator - Calculate Semester CGPA Online | CalcHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/seo-pages.css">
+</head>
+<body data-page="cgpa">
+  <div class="wrap">
+    <header class="topbar"><a class="brand" href="../index.html"><span class="brand-mark">=</span><span>CalcHub</span></a><a class="home-link" href="../index.html">Home</a></header>
+    <main>
+      <section class="hero"><span class="eyebrow">Academic Calculator</span><h1>CGPA Calculator</h1><p class="lead">Calculate your cumulative grade point average from semester GPA and semester credits. This page is built as a dedicated CGPA calculator URL for students who want a fast result and a clear formula.</p></section>
+      <section class="layout">
+        <div class="card tool">
+          <div id="semesterRows"></div>
+          <div class="actions"><button class="btn" type="button" onclick="calcCgpa()">Calculate CGPA</button><button class="btn ghost" type="button" onclick="addSemesterRow()">+ Add Semester</button></div>
+          <div class="result" id="result"><div class="result-main" id="resultMain"></div><div class="result-sub" id="resultSub"></div><div class="mini-grid" id="resultItems"></div></div>
+        </div>
+        <aside class="card content"><h2>Formula</h2><div class="formula">CGPA = Σ(Semester GPA × Semester Credits) / Σ(Semester Credits)</div><h2>Example</h2><p>If semester 1 GPA is 8.5 with 22 credits and semester 2 GPA is 9.0 with 20 credits, CGPA = (8.5×22 + 9.0×20) / 42 = 8.74.</p></aside>
+      </section>
+      <article class="card content article">
+        <h2>How This CGPA Calculator Works</h2>
+        <p>A CGPA calculator helps you find the weighted average of your semester performance. Many students make the mistake of averaging semester GPAs directly, such as adding 8.5 and 9.0 and dividing by two. That only works when both semesters have exactly the same number of credits. In real college systems, one semester may have more labs, electives or high-credit subjects than another, so credits must be included in the calculation.</p>
+        <p>This calculator asks for each semester GPA and the credits completed in that semester. It multiplies every semester GPA by its credits, adds those weighted points together, and divides the total by all credits. The result is your cumulative grade point average. The same method is commonly used by universities because it gives more importance to semesters with heavier academic load.</p>
+        <p>Use this page after every semester, before applying for internships, or when checking whether you meet a scholarship or placement requirement. If your university gives SGPA instead of GPA, you can enter SGPA in the GPA field because the weighted formula is the same. For best accuracy, use the official credits from your marksheet or academic portal. Rounding may differ slightly between colleges, but this calculator gives a reliable estimate for planning and quick checking.</p>
+        <h2>FAQ</h2>
+        <div class="faq">
+          <details><summary>Is CGPA the same as GPA?</summary><p>GPA usually refers to one term or semester. CGPA is the cumulative average across multiple semesters.</p></details>
+          <details><summary>Why are credits needed?</summary><p>Credits show the weight of a semester. A 24-credit semester should affect CGPA more than an 18-credit semester.</p></details>
+          <details><summary>Can I use SGPA here?</summary><p>Yes. Enter each semester SGPA as the semester GPA and add the matching credits.</p></details>
+        </div>
+      </article>
+    </main>
+    <footer>CalcHub calculators run in your browser. <a href="../gpa-calculator/">GPA Calculator</a> · <a href="../grade-calculator/">Grade Calculator</a> · <a href="../percentage-calculator/">Percentage Calculator</a></footer>
+  </div>
+  <script src="../assets/seo-calculators.js"></script>
+</body>
+</html>

@@ -254,6 +254,7 @@
     border-radius: var(--radius);
     background: rgba(16, 37, 46, .92);
     color: var(--text);
+    text-decoration: none;
     text-align: left;
     cursor: pointer;
     box-shadow: 0 1px 0 rgba(255, 255, 255, .04) inset;
@@ -869,6 +870,7 @@ const calculators = [
     id: 'percentage', category: 'math', icon: '%', title: 'Percentage Calculator',
     desc: 'Percent of, percent share and percent change.',
     tags: 'percentage percent increase decrease math',
+    page: 'percentage-calculator/',
     fields: [
       { id: 'mode', label: 'Mode', type: 'select', options: [['of', 'X% of Y'], ['is', 'X is what % of Y'], ['change', '% change from X to Y']] },
       { id: 'x', label: 'X', type: 'number', placeholder: '15' },
@@ -957,7 +959,26 @@ const calculators = [
     id: 'cgpa', category: 'daily', icon: '🎓', title: 'CGPA Calculator',
     desc: 'Instant GPA from grades and CGPA from semesters.',
     tags: 'cgpa gpa vit credits grades semester course s a b c d e f',
+    page: 'cgpa-calculator/',
     custom: 'cgpa'
+  },
+  {
+    id: 'gpa-page', category: 'daily', icon: '📚', title: 'GPA Calculator',
+    desc: 'Course credits and grade points GPA.',
+    tags: 'gpa grade points credits course semester',
+    page: 'gpa-calculator/'
+  },
+  {
+    id: 'grade-page', category: 'daily', icon: '🏅', title: 'Grade Calculator',
+    desc: 'Marks to percentage and letter grade.',
+    tags: 'grade calculator marks percentage pass fail',
+    page: 'grade-calculator/'
+  },
+  {
+    id: 'study-hours-page', category: 'daily', icon: '⏱️', title: 'Study Hours Calculator',
+    desc: 'Plan daily study time before exams.',
+    tags: 'study hours calculator exam planner subjects revision',
+    page: 'study-hours-calculator/'
   },
   {
     id: 'words', category: 'daily', icon: '📝', title: 'Word Counter',
@@ -1042,11 +1063,13 @@ function renderHome() {
 }
 
 function cardMarkup(calc) {
-  return `<button class="calc-card" type="button" data-tags="${escapeAttr(calc.tags)}" onclick="openCalc('${calc.id}')">
+  const open = calc.page ? `href="${calc.page}"` : `type="button" onclick="openCalc('${calc.id}')"`;
+  const tag = calc.page ? 'a' : 'button';
+  return `<${tag} class="calc-card" ${open} data-tags="${escapeAttr(calc.tags)}">
     <span class="card-icon ${calc.category}">${calc.icon}</span>
     <span><h3>${calc.title}</h3><p>${calc.desc}</p></span>
     <span class="arrow">›</span>
-  </button>`;
+  </${tag}>`;
 }
 
 function route() {
